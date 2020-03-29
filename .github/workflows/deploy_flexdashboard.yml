@@ -16,8 +16,8 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@v1
       - name: Install rmarkdown
         run: Rscript -e 'install.packages(c("rmarkdown","flexdashboard", "knitr"))'
-      - name: Render dashboard
-        run: ls
+      - run: ls
+      - name: Render dashboard    
         run: cd convid19-dashboard && Rscript -e "rmarkdown::render("index.Rmd", output_dir='public/')"
       - uses: actions/upload-artifact@v1
         with:
