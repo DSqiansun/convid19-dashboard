@@ -15,7 +15,7 @@ jobs:
        with:
           repository: CSSEGISandData/COVID-19 
      - uses: actions/upload-artifact@v1
-        with:
+       with:
           name: csse_covid_19_data
           path: csse_covid_19_data/
   flexdashboard:
