@@ -16,6 +16,8 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@v1
       - name: Install rmarkdown
         run: Rscript -e 'install.packages(c("rmarkdown","flexdashboard", "knitr"))'
+      - name: get data
+        run: git clone https://github.com/CSSEGISandData/COVID-19
       - run: ls
       - name: Render dashboard    
         run: Rscript -e "rmarkdown::render('index.Rmd', output_dir='public/')"

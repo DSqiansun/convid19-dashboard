@@ -9,8 +9,7 @@ output: flexdashboard::flex_dashboard
 library(knitr)
 library(flexdashboard)
 
-url <- "http://datasets.flowingdata.com/ppg2008.csv"
-nba_players <- read.csv(url, row.names = 1)
+nba_players <- read.csv('COVID-19/archived_data/archived_time_series/time_series_2019-ncov-Confirmed.csv')
 
 ```
 ### Top Scorers {data-width=350}
