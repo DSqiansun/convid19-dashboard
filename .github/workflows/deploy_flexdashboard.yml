@@ -7,30 +7,11 @@ on:
 name: render dashboard
 
 jobs:
-  get-convid19-date:
-    runs-on: ubuntu-latest
-    steps:
-     - name: Checkout
-       uses: actions/checkout@master
-       with:
-          repository: CSSEGISandData/COVID-19 
-     - uses: actions/upload-artifact@v1
-       with:
-          name: csse_covid_19_data
-          path: csse_covid_19_data/
   flexdashboard:
     name: Render-dashboard
     runs-on: macOS-latest
-    needs: get-convid19-date
     steps:
       - uses: actions/checkout@v1
-      - name: Download artifact
-        uses: actions/download-artifact@v1.0.0
-        with:
-          # Artifact name
-          name: csse_covid_19_data # optional
-          # Destination path
-          path: csse_covid_19_data # optional
       - uses: r-lib/actions/setup-r@v1
       - uses: r-lib/actions/setup-pandoc@v1
       - name: Install rmarkdown
