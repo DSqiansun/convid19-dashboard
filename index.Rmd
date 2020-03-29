@@ -9,7 +9,7 @@ output: flexdashboard::flex_dashboard
 library(knitr)
 library(flexdashboard)
 
-nba_players <- read.csv('COVID-19/archived_data/archived_time_series/time_series_2019-ncov-Confirmed.csv')
+nba_players <- read.csv('csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')
 
 ```
 ### Top Scorers {data-width=350}
