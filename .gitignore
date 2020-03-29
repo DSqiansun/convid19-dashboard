@@ -1,0 +1,9 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+public
+COVID-19
+**/*html
+*Rproj
+*.Rbuildignore

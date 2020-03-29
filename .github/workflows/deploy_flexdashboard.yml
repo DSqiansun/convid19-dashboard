@@ -1,0 +1,50 @@
+on:
+  push:
+     branches:
+       - master
+
+
+name: render dashboard
+
+jobs:
+  flexdashboard:
+    name: Render-dashboard
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: r-lib/actions/setup-r@v1
+      - uses: r-lib/actions/setup-pandoc@v1
+      - name: Install rmarkdown
+        run: Rscript -e 'install.packages(c("rmarkdown","flexdashboard", "knitr"))'
+      - name: Get date
+        run: git clone https://github.com/CSSEGISandData/COVID-19
+      - name: Render dashboard
+        run: Rscript -e "rmarkdown::render("index.Rmd", "flex_dashboard",output_dir='public/')"
+      - uses: actions/upload-artifact@v1
+        with:
+          name: public
+          path: public/
+  
+# Need to first create an empty gh-pages branch
+# see https://pkgdown.r-lib.org/reference/deploy_site_github.html
+# and also add secrets for a GITHUB_PAT and EMAIL to the repository
+# gh-action from Cecilapp/GitHub-Pages-deploy
+  checkout-and-deploy:
+   runs-on: ubuntu-latest
+   needs: flexdashboard
+   steps:
+     - name: Checkout
+       uses: actions/checkout@master
+     - name: Download artifact
+       uses: actions/download-artifact@v1.0.0
+       with:
+         # Artifact name
+         name: public # optional
+         # Destination path
+         path: public # optional
+     - name: Deploy to GitHub Pages
+       uses: Cecilapp/GitHub-Pages-deploy@master
+       env:
+          EMAIL: ${{ secrets.EMAIL }}               # must be a verified email
+          GH_TOKEN: ${{ secrets.GITHUB_PAT }} # https://github.com/settings/tokens
+          BUILD_DIR: public/                     # "_site/" by default

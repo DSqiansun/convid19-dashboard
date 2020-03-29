@@ -1,0 +1,19 @@
+---
+title: "dashborad"
+author: "qian"
+date: "3/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(flexdashboard)
+
+nba_players <- read.csv('COVID-19/archived_data/archived_time_series/time_series_2019-ncov-Confirmed.csv')
+
+```
+### Top Scorers {data-width=350}
+
+```{r}
+knitr::kable(nba_players[1:20])
+```
