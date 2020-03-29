@@ -2,7 +2,7 @@
 title: "dashborad"
 author: "qian"
 date: "3/29/2020"
-output: html_document
+output: flexdashboard::flex_dashboard
 ---
 
 ```{r setup, include=FALSE}
