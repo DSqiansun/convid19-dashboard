@@ -1,7 +1,7 @@
 ---
-title: "dashborad"
-author: "qian"
-date: "3/29/2020"
+title: "Coronavirus Covid-19"
+author: "Qian"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
