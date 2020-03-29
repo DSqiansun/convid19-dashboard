@@ -17,7 +17,7 @@ jobs:
       - name: Install rmarkdown
         run: Rscript -e 'install.packages(c("rmarkdown","flexdashboard", "knitr"))'
       - name: Render dashboard
-        run: Rscript -e "rmarkdown::render("index.Rmd", output_dir='public/')"
+        run: cd convid19-dashboard && Rscript -e "rmarkdown::render("index.Rmd", output_dir='public/')"
       - uses: actions/upload-artifact@v1
         with:
           name: public
