@@ -18,7 +18,7 @@ jobs:
         run: Rscript -e 'install.packages(c("rmarkdown","flexdashboard", "knitr"))'
       - run: ls
       - name: Render dashboard    
-        run: Rscript -e "rmarkdown::render("./index.Rmd", output_dir='public/')"
+        run: Rscript -e "rmarkdown::render('index.Rmd', output_dir='public/')"
       - uses: actions/upload-artifact@v1
         with:
           name: public
