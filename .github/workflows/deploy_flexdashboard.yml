@@ -19,7 +19,7 @@ jobs:
       - name: Get data
         run: git clone https://github.com/CSSEGISandData/COVID-19
       - name: Render dashboard
-        run: Rscript -e "rmarkdown::render("index.Rmd", output_dir='public/')"
+        run: CD .. && Rscript -e "rmarkdown::render("index.Rmd", output_dir='public/')"
       - uses: actions/upload-artifact@v1
         with:
           name: public
