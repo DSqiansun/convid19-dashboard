@@ -92,7 +92,7 @@ addLabel <- function(data) {
 
   return(data)
 }
-data <- data_atDate(max(data_evolution$date))#%>% addLabel()
+data <- data_atDate(max(data_evolution$date))%>% addLabel()
 
 
 ```
@@ -136,7 +136,7 @@ Row
 ### All sites and their current status {data-width=650}
 
 ```{r}
-zoomLevel=1
+zoomLevel=2
 leaflet(data = data) %>%
     addTiles() %>%
     addCircleMarkers(
@@ -145,7 +145,8 @@ leaflet(data = data) %>%
       radius       = ~log(confirmed^(zoomLevel / 2)),
       stroke       = FALSE,
       fillOpacity  = 0.5,
-      #labelFormat  = ~label,
+      popup = ~label,
+      label  = ~label,
       #labelOptions = labelOptions(textsize = 15),
       group        = "Confirmed"
     ) %>%
@@ -167,7 +168,8 @@ leaflet(data = data) %>%
       stroke       = FALSE,
       color        = "#005900",
       fillOpacity  = 0.5,
-      #label        = ~label,
+      popup = ~label,
+      label        = ~label,
       #labelOptions = labelOptions(textsize = 15),
       group = "Estimated Recoveries"
     ) %>%
@@ -178,7 +180,8 @@ leaflet(data = data) %>%
       stroke       = FALSE,
       color        = "#E7590B",
       fillOpacity  = 0.5,
-      #label        = ~label,
+      popup = ~label,
+      label        = ~label,
       #labelOptions = labelOptions(textsize = 15),
       group        = "Deceased"
     ) %>%
@@ -189,7 +192,8 @@ leaflet(data = data) %>%
       stroke       = FALSE,
       color        = "#f49e19",
       fillOpacity  = 0.5,
-      #label        = ~label,
+      popup = ~label,
+      label        = ~label,
       #labelOptions = labelOptions(textsize = 15),
       group        = "Active"
 )
@@ -219,6 +223,18 @@ knitr::kable(top5_countries)
 Data
 ===================================== 
 ```{r}
-DT::datatable(data)
-data
+
+```
+
+
+```{r}
+DT::datatable(data[,c("Province/State", "Country/Region", "date","Lat", "Long", "confirmed","recovered",  "deceased",  "active")],
+              rownames = FALSE,
+              filter = 'top',
+              extensions = 'Buttons', options = list(
+    dom = 'Bfrtip',
+    buttons = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    pageLength = 20
+  ))
+
 ```
