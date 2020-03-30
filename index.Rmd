@@ -1,15 +1,16 @@
 ---
 title: "Coronavirus Covid-19"
-author: "Qian"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+date: "`r paste0('update:', format(Sys.time(), '%d %B, %Y'))`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
     theme: yeti
+    navbar:
+      - { title: "Blog", href: "https://dsqiansun.github.io/blog/", align: right }
 ---
 
 ```{r setup, include=FALSE}
-pacman::p_load(knitr,flexdashboard, readr, fs, tidyverse, leaflet, plotly, DT, htmltools, forecast)
+pacman::p_load(knitr,flexdashboard, readr, fs, tidyverse, leaflet, plotly, DT, htmltools, forecast, data.table)
 
 confirmed_path = 'COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv'
 deceased_path = 'COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv'
@@ -97,7 +98,7 @@ data <- data_atDate(max(data_evolution$date))%>% addLabel()
 
 ```
 
-visu
+Visualisation
 =======================================================================
 
 Row
@@ -106,34 +107,44 @@ Row
 ### Confirmed {.value-box}
 
 ```{r}
-valueBox(sum(data$confirmed))
+valueBox(format(sum(data$confirmed), big.mark=","))
 
 ```
 
 ### Recovered {.value-box}
 
 ```{r}
-valueBox(sum(data$recovered))
+
+valueBox(format(sum(data$recovered), big.mark=","))
 ```
 
 ### Deceased {.value-box}
 
 ```{r}
-valueBox(sum(data$deceased))
+valueBox(format(sum(data$deceased), big.mark=","))
+
 ```
 
 ### Active {.value-box}
 
 ```{r}
-valueBox(sum(data$active))
+valueBox(format(sum(data$active), big.mark=","))
 ```
+
+### Death rate {.value-box}
+
+```{r}
+valueBox(paste0(as.character(format(round(sum(data$deceased)/sum(data$confirmed)*100, 2),nsmall=1, big.mark=",")), '%'))
+```
+
+
 
 
 
 Row
 -----------------------------------------------------------------------
 
-### All sites and their current status {data-width=650}
+### Global visualisation {data-width=600}
 
 ```{r}
 zoomLevel=2
@@ -212,29 +223,61 @@ leaflet(data = data) %>%
 ```
 
 
-### Top 5 {data-width=350}
+### Top country {data-width=400}
 
 ```{r}
-knitr::kable(top5_countries)
+data_per_country = as.data.table(data[,c('Country/Region', 'confirmed', 'deceased' )])[, lapply(.SD,sum), by=.(`Country/Region`)]
+
+data_per_country$'death rate(%)' = round(data_per_country$deceased/data_per_country$confirmed*100, 2)
+DT::datatable(data_per_country[order(-confirmed)],
+              rownames = FALSE,
+              options = list(
+              pageLength = 13
+  ))
+
 
 ```
 
 
 Data
 ===================================== 
+
+Column {.tabset}
+-------------------------------------
+   
+### Data by Country
 ```{r}
+data_per_country = as.data.table(data[,c('Country/Region', 'confirmed','recovered', 'deceased', 'active' )])[, lapply(.SD,sum), by=.(`Country/Region`)]
+
+data_per_country$'death rate(%)' = round(data_per_country$deceased/data_per_country$confirmed*100, 2)
+DT::datatable(data_per_country[order(-confirmed)],
+              rownames = FALSE,
+              filter = 'top',
+              extensions = 'Buttons',
+              options = list(
+              dom = 'Bfrtip',
+              buttons = c('copy', 'csv', 'excel', 'pdf', 'print'),
+              pageLength = 13
+  ))
 
 ```
 
 
+### Data by Province
 ```{r}
-DT::datatable(data[,c("Province/State", "Country/Region", "date","Lat", "Long", "confirmed","recovered",  "deceased",  "active")],
+data$'death rate(%)' = round(data$deceased/data$confirmed*100, 2)
+
+DT::datatable(data[,c("Province/State", "Country/Region",  "confirmed","recovered",  "deceased",  "active",'death rate(%)')],
               rownames = FALSE,
               filter = 'top',
               extensions = 'Buttons', options = list(
     dom = 'Bfrtip',
     buttons = c('copy', 'csv', 'excel', 'pdf', 'print'),
-    pageLength = 20
+    pageLength = 13
   ))
 
 ```
+
+
+Motivation
+===================================== 
