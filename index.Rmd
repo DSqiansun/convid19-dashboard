@@ -131,12 +131,6 @@ valueBox(format(sum(data$deceased), big.mark=","))
 valueBox(format(sum(data$active), big.mark=","))
 ```
 
-### Death rate {.value-box}
-
-```{r}
-valueBox(paste0(as.character(format(round(sum(data$deceased)/sum(data$confirmed)*100, 2),nsmall=1, big.mark=",")), '%'))
-```
-
 
 
 
