@@ -1,10 +1,10 @@
 on:
-#   push:
-#     branches:
-#       - master
-   schedule:
+   push:
+     branches:
+       - master
+#   schedule:
      # * is a special character in YAML so you have to quote this string
-      - cron:  '35 10 * * *'
+#      - cron:  '35 10 * * *'
 
 
 name: render dashboard
