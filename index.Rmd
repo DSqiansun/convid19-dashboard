@@ -107,7 +107,7 @@ Row
 ### Confirmed {.value-box}
 
 ```{r}
-valueBox(format(sum(data$confirmed), big.mark=","))
+valueBox(format(sum(data$confirmed, na.rm = T), big.mark=","))
 
 ```
 
@@ -115,20 +115,20 @@ valueBox(format(sum(data$confirmed), big.mark=","))
 
 ```{r}
 
-valueBox(format(sum(data$recovered), big.mark=","))
+valueBox(format(sum(data$recovered, na.rm = T), big.mark=","))
 ```
 
 ### Deceased {.value-box}
 
 ```{r}
-valueBox(format(sum(data$deceased), big.mark=","))
+valueBox(format(sum(data$deceased, na.rm = T), big.mark=","))
 
 ```
 
 ### Active {.value-box}
 
 ```{r}
-valueBox(format(sum(data$active), big.mark=","))
+valueBox(format(sum(data$active, na.rm = T), big.mark=","))
 ```
 
 
